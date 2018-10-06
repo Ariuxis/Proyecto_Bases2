@@ -1,5 +1,5 @@
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-09-20 16:51:37.159
+- Created by Vertabelo (http://vertabelo.com)
+-- Last modification date: 2018-09-28 01:39:05.498
 
 -- tables
 -- Table: Bill
@@ -9,7 +9,7 @@ CREATE TABLE Bill (
     billDeliveryDate date  NOT NULL,
     errandID integer  NOT NULL,
     CONSTRAINT Bill_pk PRIMARY KEY (billID)
-) tablespace tbs_verayu_bill;
+) ;
 
 -- Table: Bill_Detail
 CREATE TABLE Bill_Detail (
@@ -18,7 +18,7 @@ CREATE TABLE Bill_Detail (
     bDetailQuantity smallint  NOT NULL,
     bDetailPrice numeric(5,2)  NOT NULL,
     CONSTRAINT Bill_Detail_pk PRIMARY KEY (billID,productID)
-) tablespace tbs_verayu_bill;
+) ;
 
 -- Table: Catalogue
 CREATE TABLE Catalogue (
@@ -26,7 +26,7 @@ CREATE TABLE Catalogue (
     catalogueSdate date  NOT NULL,
     catalogueEdate date  NOT NULL,
     CONSTRAINT Catalogue_pk PRIMARY KEY (catalogueID)
-) tablespace tbs_verayu_product;
+) ;
 
 -- Table: Catalogue_Detail
 CREATE TABLE Catalogue_Detail (
@@ -35,15 +35,15 @@ CREATE TABLE Catalogue_Detail (
     cDetailPrice numeric(3,2)  NOT NULL,
     cDetailQuantity smallint  NOT NULL,
     CONSTRAINT Catalogue_Detail_pk PRIMARY KEY (catalogueID,productID)
-) tablespace tbs_verayu_product;
+) ;
 
 -- Table: Category
 CREATE TABLE Category (
     categoryID integer  NOT NULL,
     categoryName nchar(15)  NOT NULL,
-    typeID integer  NOT NULL,
+    pTypeID integer  NOT NULL,
     CONSTRAINT Category_pk PRIMARY KEY (categoryID)
-) tablespace tbs_verayu_product;
+) ;
 
 -- Table: City
 CREATE TABLE City (
@@ -51,7 +51,7 @@ CREATE TABLE City (
     cityName nchar(30)  NOT NULL,
     deptID integer  NOT NULL,
     CONSTRAINT City_pk PRIMARY KEY (cityID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Client
 CREATE TABLE Client (
@@ -64,14 +64,14 @@ CREATE TABLE Client (
     cTypeID integer  NOT NULL,
     cEntityID integer  NOT NULL,
     CONSTRAINT Client_pk PRIMARY KEY (clientID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Client_Entity
 CREATE TABLE Client_Entity (
     cEntityID integer  NOT NULL,
     cEntityName nchar(15)  NOT NULL,
     CONSTRAINT Client_Entity_pk PRIMARY KEY (cEntityID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Client_Type
 CREATE TABLE Client_Type (
@@ -79,14 +79,14 @@ CREATE TABLE Client_Type (
     cTypeName nchar(15)  NOT NULL,
     cTypeDiscount smallint  NOT NULL,
     CONSTRAINT Client_Type_pk PRIMARY KEY (cTypeID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Country
 CREATE TABLE Country (
     countryID integer  NOT NULL,
     countryName nchar(20)  NOT NULL,
     CONSTRAINT countryID PRIMARY KEY (countryID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Department
 CREATE TABLE Department (
@@ -94,14 +94,14 @@ CREATE TABLE Department (
     deptName nchar(30)  NOT NULL,
     countryID integer  NOT NULL,
     CONSTRAINT Department_pk PRIMARY KEY (deptID)
-) tablespace tbs_verayu_general;
+) ;
 
 -- Table: Envelope
 CREATE TABLE Envelope (
     envelopeID integer  NOT NULL,
     envelopeName nchar(15)  NOT NULL,
     CONSTRAINT Envelope_pk PRIMARY KEY (envelopeID)
-) tablespace tbs_verayu_product;
+) ;
 
 -- Table: Errand
 CREATE TABLE Errand (
@@ -110,7 +110,7 @@ CREATE TABLE Errand (
     clientID integer  NOT NULL,
     eStateID integer  NOT NULL,
     CONSTRAINT Errand_pk PRIMARY KEY (errandID)
-) tablespace tbs_verayu_errand;
+) ;
 
 -- Table: Errand_Detail
 CREATE TABLE Errand_Detail (
@@ -119,14 +119,14 @@ CREATE TABLE Errand_Detail (
     eDetailQuantity smallint  NOT NULL,
     eDetailPrice numeric(5,2)  NOT NULL,
     CONSTRAINT Errand_Detail_pk PRIMARY KEY (errandID,productID)
-) tablespace tbs_verayu_errand;
+) ;
 
 -- Table: Errand_State
 CREATE TABLE Errand_State (
     eStateID integer  NOT NULL,
     eStateName nchar(15)  NOT NULL,
     CONSTRAINT Errand_State_pk PRIMARY KEY (eStateID)
-) tablespace tbs_verayu_errand;
+) ;
 
 -- Table: Product
 CREATE TABLE Product (
@@ -141,7 +141,14 @@ CREATE TABLE Product (
     providerID integer  NOT NULL,
     envelopeID integer  NOT NULL,
     CONSTRAINT Product_pk PRIMARY KEY (productID)
-) tablespace tbs_verayu_product;
+) ;
+
+-- Table: Product_Type
+CREATE TABLE Product_Type (
+    pTypeID integer  NOT NULL,
+    pTypeName nchar(15)  NOT NULL,
+    CONSTRAINT Product_Type_pk PRIMARY KEY (pTypeID)
+) ;
 
 -- Table: Provider
 CREATE TABLE Provider (
@@ -152,21 +159,14 @@ CREATE TABLE Provider (
     providerAddress varchar2(15)  NOT NULL,
     cityID integer  NOT NULL,
     CONSTRAINT Provider_pk PRIMARY KEY (providerID)
-) tablespace tbs_verayu_general;
-
--- Table: Type
-CREATE TABLE Type (
-    typeID integer  NOT NULL,
-    typeName nchar(15)  NOT NULL,
-    CONSTRAINT Type_pk PRIMARY KEY (typeID)
-) tablespace tbs_verayu_product;
+) ;
 
 -- Table: Unsold
 CREATE TABLE Unsold (
     unsoldID integer  NOT NULL,
     errandID integer  NOT NULL,
     CONSTRAINT Unsold_pk PRIMARY KEY (unsoldID)
-) tablespace tbs_verayu_errand;
+) ;
 
 -- Table: Unsold_Detail
 CREATE TABLE Unsold_Detail (
@@ -175,7 +175,7 @@ CREATE TABLE Unsold_Detail (
     uDetailQuantity integer  NOT NULL,
     uDetailPrice numeric(5,2)  NOT NULL,
     CONSTRAINT Unsold_Detail_pk PRIMARY KEY (productID,unsoldID)
-) tablespace tbs_verayu_errand;
+) ;
 
 -- foreign keys
 -- Reference: Bill_Detail_Bill (table: Bill_Detail)
@@ -205,8 +205,8 @@ ALTER TABLE Catalogue_Detail ADD CONSTRAINT Catalogue_Detail_Product
 
 -- Reference: Category_Type (table: Category)
 ALTER TABLE Category ADD CONSTRAINT Category_Type
-    FOREIGN KEY (typeID)
-    REFERENCES Type (typeID);
+    FOREIGN KEY (pTypeID)
+    REFERENCES Product_Type (pTypeID);
 
 -- Reference: City_Department (table: City)
 ALTER TABLE City ADD CONSTRAINT City_Department
@@ -289,4 +289,3 @@ ALTER TABLE Unsold ADD CONSTRAINT Unsold_Errand
     REFERENCES Errand (errandID);
 
 -- End of file.
-
