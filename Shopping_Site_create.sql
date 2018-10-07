@@ -102,12 +102,12 @@ end envelope_register;
 create or replace procedure productType_register(id integer, name nchar) is
 begin
 	insert into product_type (pTypeID, pTypeName) values (id, name);
-	dbms_output.put_line('Type registered: ' || id || ' ' || name);
+	dbms_output.put_line('Product type registered: ' || id || ' ' || name);
 exception
 when dup_val_on_index then
-	dbms_output.put_line('Type ID is already registered.');
+	dbms_output.put_line('Product type ID is already registered.');
 when others then
-	dbms_output.put_line('There has been an error when registering the type.');
+	dbms_output.put_line('There has been an error when registering the product type.');
 end productType_register;
 
 create or replace procedure category_register(id integer, name nchar, pType_id integer) is
