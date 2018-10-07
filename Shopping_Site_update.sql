@@ -41,7 +41,7 @@ when others then
 	dbms_output.put_line('There has been an error when updating the catalogue.');
 end catalogue_update;
 
-create or replace procedure catalogueDetail_update(catalogue_id integer, product_id integer
+create or replace procedure catalogueDetail_update(catalogue_id integer, product_id integer,
 												   price numeric, quantity smallint) is
 begin
 	update catalogue_detail set cDetailPrice = price, cDetailQuantity = quantity
@@ -68,8 +68,6 @@ exception
 when others then
 	dbms_output.put_line('There has been an error when updating the city.');
 end city_update;
-
-
 
 create or replace procedure category_update(id integer, name nchar, pType_id integer) is
 begin
@@ -98,7 +96,7 @@ when others then
 end clientType_update;
 
 
-Create or replace procedure clientEntity_update(id integer, name nchar) is
+create or replace procedure clientEntity_update(id integer, name nchar) is
 begin
 	update client_Entity set cEntityName = name where cEntityID = id;
 	if sql%rowcount = 0 then
@@ -112,7 +110,7 @@ when others then
 end clientEntity_update;
 
 
-Create or replace procedure productType_update(id integer, name nchar) is
+create or replace procedure productType_update(id integer, name nchar) is
 begin
 	update product_Type set pTypeName = name where pTypeID = id;
 	if sql%rowcount = 0 then
@@ -125,7 +123,7 @@ when others then
 	dbms_output.put_line('There has been an error when updating the product type.');
 end productType_update;
 
-Create or replace procedure errandState_update(id integer, name nchar) is
+create or replace procedure errandState_update(id integer, name nchar) is
 begin
 	update errand_State set eStateName = name where eStateID = id;
 	if sql%rowcount = 0 then
@@ -138,7 +136,7 @@ when others then
 	dbms_output.put_line('There has been an error when updating the errand state.');
 end errandState_update;
 
-Create or replace procedure envelope_update(id integer, name nchar) is
+create or replace procedure envelope_update(id integer, name nchar) is
 begin
 	update Envelope set envelopeName = name where envelopeID = id;
 	if sql%rowcount = 0 then
@@ -150,8 +148,6 @@ exception
 when others then
 	dbms_output.put_line('There has been an error when updating the envelope.');
 end envelope_update;
-
-
 
 create or replace procedure provider_update(id integer,
 											name nchar,
@@ -172,7 +168,6 @@ exception
 when others then
 	dbms_output.put_line('There has been an error when updating the provider.');
 end provider_update;
-
 
 create or replace procedure client_update(id integer, 
 										  name nchar,
