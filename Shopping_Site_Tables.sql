@@ -16,7 +16,7 @@ CREATE TABLE Bill_Detail (
     billID integer  NOT NULL,
     productID integer  NOT NULL,
     bDetailQuantity smallint  NOT NULL,
-    bDetailPrice numeric(5,2)  NOT NULL,
+    bDetailPrice numeric(8,2)  NOT NULL,
     CONSTRAINT Bill_Detail_pk PRIMARY KEY (billID,productID)
 ) ;
 
@@ -32,7 +32,7 @@ CREATE TABLE Catalogue (
 CREATE TABLE Catalogue_Detail (
     catalogueID integer  NOT NULL,
     productID integer  NOT NULL,
-    cDetailPrice numeric(3,2)  NOT NULL,
+    cDetailPrice numeric(5,2)  NOT NULL,
     cDetailQuantity smallint  NOT NULL,
     CONSTRAINT Catalogue_Detail_pk PRIMARY KEY (catalogueID,productID)
 ) ;
@@ -117,7 +117,7 @@ CREATE TABLE Errand_Detail (
     errandID integer  NOT NULL,
     productID integer  NOT NULL,
     eDetailQuantity smallint  NOT NULL,
-    eDetailPrice numeric(5,2)  NOT NULL,
+    eDetailPrice numeric(8,2)  NOT NULL,
     CONSTRAINT Errand_Detail_pk PRIMARY KEY (errandID,productID)
 ) ;
 
@@ -132,11 +132,11 @@ CREATE TABLE Errand_State (
 CREATE TABLE Product (
     productID integer  NOT NULL,
     productName nchar(15)  NOT NULL,
-    productPrice numeric(3,2)  NOT NULL,
+    productPrice numeric(5,2)  NOT NULL,
     productIVA smallint  NOT NULL,
     productQuantity smallint  NOT NULL,
-    productWeight number(3,2)  NOT NULL,
-    productState nchar(8)  NOT NULL,
+    productWeight numeric(5,2)  NOT NULL,
+    productState nchar(15)  NOT NULL,
     categoryID integer  NOT NULL,
     providerID integer  NOT NULL,
     envelopeID integer  NOT NULL,
