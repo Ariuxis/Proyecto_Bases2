@@ -1,17 +1,3 @@
-# VALIDATION #
-create or replace function catalogue_validation(id integer, sDate date, eDate date) return boolean is
-value varchar(1);
-begin
-	select 'x' into value from catalogue 
-	where ((sDate between catalogueSDate and catalogueEDate) or
-	(eDate between catalogueSDate and catalogueEDate)) and catalogueID != id;
-	return false;
-exception
-when no_data_found then
-	return true;
-end;
-
-# CREATE #
 create or replace procedure country_register(id integer, name nchar) is
 begin
 	insert into country (countryID, countryName) values (id, name);
@@ -152,12 +138,12 @@ end errandState_register;
 
 create or replace procedure catalogue_register(id integer, sDate date, eDate date) is
 begin
-if catalogue_validation(id, sDate, eDate) = true and sDate < eDate then
-	insert into catalogue (catalogueID, catalogueSDate, catalogueEDate) values (id, sDate, eDate);
-	dbms_output.put_line('Catalogue registered: ' || id);
-else
-	dbms_output.put_line('Catalogue dates are invalid.');
-end if;
+	if catalogue_validation(id, sDate, eDate) = true and sDate < eDate then
+		insert into catalogue (catalogueID, catalogueSDate, catalogueEDate) values (id, sDate, eDate);
+		dbms_output.put_line('Catalogue registered: ' || id);
+	else
+		dbms_output.put_line('Catalogue dates are invalid.');
+	end if;
 exception
 when dup_val_on_index then
 	dbms_output.put_line('Catalogue ID is already registered.');
