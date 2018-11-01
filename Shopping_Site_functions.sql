@@ -16,6 +16,7 @@ end total_price;
 
 create or replace function get_catalogueID(eDate date) return integer is
 cDate integer;
+errorFound exception;
 begin
 	select catalogueID into cDate from catalogue 
 	where eDate between catalogueSDate and catalogueEDate;
@@ -23,12 +24,13 @@ begin
 exception
 when no_data_found then
 	dbms_output.put_line('No catalogue found in that date.');
-	raise_application_error(-20001, 'CatalogueID_error')
+	raise errorFound;
 when others then
 	dbms_output.put_line('There has been an error when getting the catalogue.');
+	raise errorFound;
 end get_catalogueID;
 
-create or replace function catalogue_validation(id integer, sDate date, eDate date) return boolean is
+create or replace function catalogueDate_validation(id integer, sDate date, eDate date) return boolean is
 value varchar(1);
 begin
 	select 'x' into value from catalogue 
@@ -38,13 +40,24 @@ begin
 exception
 when no_data_found then
 	return true;
-end;
+end catalogueDate_validation;
 
-create or replace function errandDate_validation return boolean is
+create or replace function catalogue_validation(id integer) return boolean is
 value varchar(1);
 begin
 	select 'x' into value from catalogue 
-	where sysdate between catalogueSDate and catalogueEDate;
+	where catalogueID = id;
+	return true;
+exception
+when no_data_found then
+	return false;
+end catalogue_validation;
+
+create or replace function errandDate_validation(eDate date) return boolean is
+value varchar(1);
+begin
+	select 'x' into value from catalogue 
+	where eDate between catalogueSDate and catalogueEDate;
 	return true;
 exception
 when no_data_found then
@@ -97,19 +110,33 @@ when no_data_found then
 	return false;
 end errandState_validation;
 
+create or replace function bill_validation(id integer) return boolean is
+value varchar(1);
+begin
+	select 'x' into value from bill
+	where billID = id;
+	return true;
+exception
+when no_data_found then
+	return false;
+end bill_validation;
+
 create or replace function new_quantity(errand_id integer, product_id integer) return integer is
 total integer;
+errorFound exception;
 begin
 	select cDetailQuantity - eDetailQuantity into total
 	from errand inner join errand_detail on errand.errandID = errand_detail.errandID
 	inner join catalogue_detail on errand_detail.productID = catalogue_detail.productID
 	inner join catalogue on catalogue_detail.catalogueID = catalogue.catalogueID
 	where errand_detail.errandID = errand_id and errand_detail.productID = product_id
-	and errandDate between catalogueSDate and catalogueEDate;
+	and errandDate between catalogueSDaete and catalogueEDate;
 	return total;
 exception
 when no_data_found then
 	dbms_output.put_line('IDs does not exist.');
+	raise errorFound;
 when others then
 	dbms_output.put_line('There has been an error when calculating the new quantity.');
+	raise errorFound;
 end new_quantity;

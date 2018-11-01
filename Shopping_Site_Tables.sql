@@ -135,7 +135,7 @@ CREATE TABLE Product (
     productPrice numeric(5,2)  NOT NULL,
     productIVA smallint  NOT NULL,
     productQuantity smallint  NOT NULL,
-    productWeight numeric(5,2)  NOT NULL,
+    productWeight numeric(7,3)  NOT NULL,
     productState nchar(15)  NOT NULL,
     categoryID integer  NOT NULL,
     providerID integer  NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE Unsold_Detail (
     productID integer  NOT NULL,
     unsoldID integer  NOT NULL,
     uDetailQuantity integer  NOT NULL,
-    uDetailPrice numeric(5,2)  NOT NULL,
+    uDetailPrice numeric(8,2)  NOT NULL,
     CONSTRAINT Unsold_Detail_pk PRIMARY KEY (productID,unsoldID)
 ) ;
 

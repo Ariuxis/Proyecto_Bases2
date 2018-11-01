@@ -176,10 +176,95 @@ when others then
 	dbms_output.put_line('There has been an error when reading the client.');
 end client_read;
 
-create or replace procedure catalogue_read(id integer) is
+create or replace procedure catalogue_read(catalogue_id integer) is
 cursor temp_cursor is
-select productName
+select productName, cDetailPrice, cDetailQuantity, product.productID
 from catalogue_detail inner join product on catalogue_detail.productID = product.productID
-where catalogue_detail.catalogueID = id;
+where catalogue_detail.catalogueID = catalogue_id;
+sDate date;
+eDate date;
 begin
+	if catalogue_validation(catalogue_id) = true then
+		select catalogueSDate, catalogueEDate into sDate, eDate
+		from catalogue where catalogueID = catalogue_id;
+		dbms_output.put_line('Catalogue ID: ' || catalogue_id || chr(10) ||
+							 'Catalogue start date: ' || sDate || chr(10) ||
+							 'Catalogue end date: ' || eDate || chr(10) || chr(10) ||
+							 'Product list');
+		for read in temp_cursor loop
+			dbms_output.put_line('Product ID: ' || read.productID || ' ' ||
+								 'Product name: ' || read.productName || ' | ' ||
+								 'Quantity: ' || read.cDetailQuantity || ' | ' ||
+								 'Price: ' || read.cDetailPrice);
+		end loop;
+	else
+		dbms_output.put_line('Catalogue ID does not exist.');
+	end if;
 end catalogue_read;
+
+create or replace procedure errand_read(errand_id integer) is
+cursor temp_cursor is
+select eDetailPrice, eDetailQuantity, productName 
+from errand_detail inner join product on errand_detail.productID = product.productID
+where errand_detail.errandID = errand_id;
+eDate date;
+name nchar(20);
+state nchar(15);
+begin
+	if errand_validation(errand_id) = true then
+		select errandDate, clientName, eStateName into eDate, name, state
+		from errand_state inner join errand on errand_state.eStateID = errand.eStateID
+		inner join client on errand.clientID = client.clientID
+		where errandID = errand_id;
+		dbms_output.put_line('Errand ID: ' || errand_id || chr(10) ||
+							 'Errand date: ' || eDate || chr(10) ||
+							 'Errand state: ' || state || chr(10) ||
+							 'Client name: ' || name || chr(10) || chr(10) ||
+							 'Product list');
+		for read in temp_cursor loop
+			dbms_output.put_line('Product name: ' || read.productName || ' ' ||
+								 'Quantity: ' || read.eDetailQuantity || ' | ' ||
+								 'Price: ' || read.eDetailPrice);
+		end loop;
+	else
+		dbms_output.put_line('Errand ID does not exist.');
+	end if;
+exception
+when others then
+	dbms_output.put_line('There has been an error when reading the errand.');
+end errand_read;
+
+create or replace procedure bill_read(bill_id integer) is
+cursor temp_cursor is
+select bDetailPrice, bDetailQuantity, productName 
+from bill_detail inner join product on bill_detail.productID = product.productID
+where bill_detail.billID = bill_id;
+bDate date;
+dDate date;
+name nchar(20);
+errand_id integer;
+begin
+	if bill_validation(bill_id) = true then
+		select billDate, clientName, billDeliveryDate, bill.errandID 
+		into bDate, name, dDate, errand_id
+		from bill inner join errand on bill.errandID = errand.errandID
+		inner join client on errand.clientID = client.clientID
+		where billID = bill_id;
+		dbms_output.put_line('Bill ID: ' || bill_id || chr(10) ||
+							 'Bill date: ' || bDate || chr(10) ||
+							 'Bill delivery date: ' || dDate || chr(10) ||
+							 'Errand ID: ' || errand_id || chr(10) ||
+							 'Client name: ' || name || chr(10) || chr(10) ||
+							 'Product list');
+		for read in temp_cursor loop
+			dbms_output.put_line('Product name: ' || read.productName || ' ' ||
+								 'Quantity: ' || read.bDetailQuantity || ' | ' ||
+								 'Price: ' || read.bDetailPrice);
+		end loop;
+	else
+		dbms_output.put_line('Bill ID does not exist.');
+	end if;
+exception
+when others then
+	dbms_output.put_line('There has been an error when reading the bill.');
+end bill_read;

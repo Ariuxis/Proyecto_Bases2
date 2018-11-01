@@ -138,7 +138,7 @@ end errandState_register;
 
 create or replace procedure catalogue_register(id integer, sDate date, eDate date) is
 begin
-	if catalogue_validation(id, sDate, eDate) = true and sDate < eDate then
+	if catalogueDate_validation(id, sDate, eDate) = true and sDate < eDate then
 		insert into catalogue (catalogueID, catalogueSDate, catalogueEDate) values (id, sDate, eDate);
 		dbms_output.put_line('Catalogue registered: ' || id);
 	else

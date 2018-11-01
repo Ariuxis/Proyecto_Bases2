@@ -26,7 +26,7 @@ end department_update;
 
 create or replace procedure catalogue_update(id integer, sDate date, eDate date) is
 begin
-if catalogue_validation(id, sDate, eDate) = true and sDate < eDate then
+if catalogueDate_validation(id, sDate, eDate) = true and sDate < eDate then
 	update catalogue set catalogueSDate = sDate, catalogueEDate = eDate where catalogueID = id;
 	if sql%rowcount = 0 then
 		dbms_output.put_line('Catalogue ID does not exist.');
