@@ -121,22 +121,13 @@ when no_data_found then
 	return false;
 end bill_validation;
 
-create or replace function new_quantity(errand_id integer, product_id integer) return integer is
-total integer;
-errorFound exception;
+create or replace function client_validation(id integer) return boolean is
+value varchar(1);
 begin
-	select cDetailQuantity - eDetailQuantity into total
-	from errand inner join errand_detail on errand.errandID = errand_detail.errandID
-	inner join catalogue_detail on errand_detail.productID = catalogue_detail.productID
-	inner join catalogue on catalogue_detail.catalogueID = catalogue.catalogueID
-	where errand_detail.errandID = errand_id and errand_detail.productID = product_id
-	and errandDate between catalogueSDaete and catalogueEDate;
-	return total;
+	select 'x' into value from client
+	where clientID = id;
+	return true;
 exception
 when no_data_found then
-	dbms_output.put_line('IDs does not exist.');
-	raise errorFound;
-when others then
-	dbms_output.put_line('There has been an error when calculating the new quantity.');
-	raise errorFound;
-end new_quantity;
+	return false;
+end client_validation;
