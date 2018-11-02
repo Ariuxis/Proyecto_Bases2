@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<errand>
+    
+    <client>
+        <id>2</id>
+        <name>antonio yu</name>
+        <email>antonio@gmail.com</email>
+        <phone>(503) 555-7555</phone>
+        <address>2732 Baker Blvd.</address>
+        <city>2</city>
+        <type>1</type>
+        <entity>1</entity>
+    </client>
+    
+    <header>
+        <date>2018-10-20</date>
+        <detail>
+            <product>
+                <id>1</id>
+                <name>Doritos</name>
+                <quantity>10</quantity>
+            </product>
+            <product>
+                <id>2</id>
+                <name>Cheese Tris</name>
+                <quantity>25</quantity>
+            </product>
+        </detail>
+    </header>
+</errand>
